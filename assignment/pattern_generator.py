@@ -42,47 +42,34 @@ import maya.cmds as cmds
 # Clear the scene.
 cmds.file(new=True, force=True)
 
-
 def generate_pattern():
-    """Generate a procedural pattern of objects using nested loops.
-
-    This function should:
-        1. Define variables for rows, columns, and spacing.
-        2. Use a nested for-loop to iterate over rows and columns.
-        3. Inside the loop, use a conditional to vary object properties.
-        4. Create and position each object.
-    """
     # --- Configuration variables ---
-    num_rows = 5        # Number of rows in the pattern.
-    num_cols = 5        # Number of columns in the pattern.
-    spacing = 3.0       # Distance between object centers.
+    # These lines of code are giving names to how long and wide the pattern will be
+    number_rows = 6  
+    number_columns = 6 
+    spacing = 3.0 
 
-    # TODO: Create a nested loop that iterates over rows and columns.
-    #
-    # HINT -- your loop structure should look something like this:
-    #
-    #   for row in range(num_rows):
-    #       for col in range(num_cols):
-    #           # Calculate position
-    #           x_pos = col * spacing
-    #           z_pos = row * spacing
-    #
-    #           # TODO: Add a conditional here that changes something
-    #           # based on row, col, or (row + col).
-    #           # For example:
-    #           #   if (row + col) % 2 == 0:
-    #           #       create a cube
-    #           #   else:
-    #           #       create a sphere
-    #
-    #           # TODO: Create the object using cmds.polyCube(), etc.
-    #
-    #           # TODO: Position the object using cmds.move().
-    #
-    #           # TODO: (Optional) Vary the scale using cmds.scale().
+    # I used number_rows to match the name I created above
+    for rows in range(number_rows):
+        # This makes sure all of the coordinates made have an object placed for them
+        for columns in range(number_columns):
+            
+            # Makes sure the objects are placed in a grid
+            x_pos = columns * spacing
+            z_pos = rows * spacing
 
-    pass  # Remove this line once you add your code.
+            # One of the variables used to make the pattern
+            # I use rows and columns variables I made to make checker pattern
+            if  (rows + columns) % 2 == 0:
+                geometry = cmds.polyCube(name=f"bloop_{rows}_{columns}")[0]
+                cmds.scale(2, 1, 2, geometry)
+            else:
+                # Is the oposite for the variable above
+                geometry = cmds.polySphere(name=f"beep_{rows}_{columns}")[0]
+                cmds.scale(1, 1, 1, geometry)
 
+            # needed to move and create all the objects
+            cmds.move(x_pos, 0, z_pos, geometry)
 
 # ---------------------------------------------------------------------------
 # Run the generator
